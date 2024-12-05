@@ -1,71 +1,99 @@
+const cells = document.querySelectorAll('.cell');
+const xScoreElement = document.getElementById('x-score');
+const oScoreElement = document.getElementById('o-score');
+const congratulations = document.getElementById('congratulations');
+const winnerAnnouncement = document.getElementById('winner-announcement');
+const winnerMessage = document.getElementById('winner-message');
+const backButton = document.getElementById('back-button');
 
-const canvas = document.getElementById('linesCanvas');
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+let xScore = 0;
+let oScore = 0;
+let currentPlayer = 'X';
+let roundCount = 0;
 
-let lines = [];
-const numLines = 30;
+const winningCombinations = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+];
 
-class SquigglyLine {
-    constructor() {
-        this.points = [];
-        this.length = Math.floor(Math.random() * 5 + 5);
-        this.speed = Math.random() * 2 + 0.5;
+cells.forEach(cell => {
+    cell.addEventListener('click', () => {
+        if (!cell.textContent) {
+            cell.textContent = currentPlayer;
+            cell.style.color = currentPlayer === 'X' ? 'darkgreen' : 'blue';
 
-        // Generate initial points for the squiggly line
-        for (let i = 0; i <= this.length; i++) {
-            this.points.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height
-            });
-        }
-    }
-
-    update() {
-        this.points.forEach((point, index) => {
-            point.y += Math.sin(Date.now() * 0.002 + index * 0.5) * this.speed;
-            point.x += Math.cos(Date.now() * 0.002 + index * 0.5) * this.speed;
-
-            // Reset position if it goes out of bounds
-            if (point.x > canvas.width) point.x = 0;
-            if (point.x < 0) point.x = canvas.width;
-            if (point.y > canvas.height) point.y = 0;
-            if (point.y < 0) point.y = canvas.height;
-        });
-    }
-
-    draw() {
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        this.points.forEach((point, index) => {
-            if (index === 0) {
-                ctx.moveTo(point.x, point.y);
+            if (checkWinner()) {
+                currentPlayer === 'X' ? xScore++ : oScore++;
+                updateScores();
+                showCongratulations();
+                setTimeout(handleRoundEnd, 2000);
+            } else if (isBoardFull()) {
+                setTimeout(handleRoundEnd, 2000); // No congratulations for a tie
             } else {
-                ctx.lineTo(point.x, point.y);
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
             }
-        });
-        ctx.stroke();
-    }
-}
-
-function init() {
-    for (let i = 0; i < numLines; i++) {
-        lines.push(new SquigglyLine());
-    }
-}
-
-function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    lines.forEach(line => {
-        line.update();
-        line.draw();
+        }
     });
+});
 
-    requestAnimationFrame(animate);
+function checkWinner() {
+    return winningCombinations.some(combination => {
+        return combination.every(index => {
+            return cells[index].textContent === currentPlayer;
+        });
+    });
 }
 
-init();
-animate();
+function isBoardFull() {
+    return [...cells].every(cell => cell.textContent);
+}
+
+function updateScores() {
+    xScoreElement.textContent = xScore;
+    oScoreElement.textContent = oScore;
+}
+
+function showCongratulations() {
+    congratulations.classList.remove('hidden');
+}
+
+function handleRoundEnd() {
+    congratulations.classList.add('hidden');
+
+    if (xScore >= 3 || oScore >= 3) {
+        announceWinner();
+        resetScores();
+    } else {
+        resetGame();
+    }
+}
+
+function announceWinner() {
+    let winner = xScore > oScore ? 'X is the Winner!' : 'O is the Winner!';
+    winnerMessage.textContent = winner;
+    winnerAnnouncement.classList.remove('hidden');
+    setTimeout(() => {
+        winnerAnnouncement.classList.add('hidden');
+    }, 3000);
+}
+
+function resetScores() {
+    xScore = 0;
+    oScore = 0;
+    updateScores();
+}
+
+function resetGame() {
+    cells.forEach(cell => cell.textContent = '');
+    currentPlayer = 'X';
+}
+
+backButton.addEventListener('click', () => {
+    // Code to handle going back to previous page if necessary
+});

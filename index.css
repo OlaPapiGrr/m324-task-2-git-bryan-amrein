@@ -1,23 +1,76 @@
-
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow: hidden;
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(
+        to right,
+        violet,
+        indigo,
+        blue,
+        green,
+        yellow,
+        orange,
+        red
+    );
+    color: white;
+    font-family: Arial, sans-serif;
 }
 
-.background {
+#game-container {
     position: relative;
-    height: 100%;
-    overflow: hidden;
-    background: linear-gradient(135deg, #6a0dad, #9b59b6);
+    text-align: center;
+    background-color: red;
+    border: 5px solid darkgreen;
+    border-radius: 15px;
+    padding: 20px;
 }
 
-canvas {
+#back-button {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+    top: 10px;
+    left: 10px;
+    cursor: pointer;
+}
+
+#score-board {
+    margin-bottom: 20px;
+}
+
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 5px;
+    margin: auto;
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3em;
+    color: black;
+    border: 2px solid darkgreen;
+    transition: transform 0.1s;
+}
+
+.cell:hover {
+    transform: scale(1.1);
+}
+
+.hidden {
+    display: none;
+}
+
+#congratulations {
+    margin: 20px 0;
+    font-size: 2em;
+}
+
+#winner-announcement {
+    margin-top: 20px;
 }
