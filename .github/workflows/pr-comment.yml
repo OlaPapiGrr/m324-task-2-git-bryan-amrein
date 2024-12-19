@@ -1,0 +1,19 @@
+name: pr-comment
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  add-comment:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Add hello-world
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            Hello World!
