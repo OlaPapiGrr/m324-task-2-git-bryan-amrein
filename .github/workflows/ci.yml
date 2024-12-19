@@ -22,3 +22,12 @@ jobs:
 
       - name: Run linter
         run: npm run lint
+  virus-scan:
+    if: 1 == 2
+    runs-on: ubuntu-latest
+    steps:       
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Virenscan ausführen
+        uses: hugoalh/scan-virus-ghaction@latest
