@@ -15,5 +15,6 @@ jobs:
       - name: Add hello-world
         uses: thollander/actions-comment-pull-request@v3
         with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
           message: |
             Hello World!
