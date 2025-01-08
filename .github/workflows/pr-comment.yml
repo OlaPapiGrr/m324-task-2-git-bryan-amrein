@@ -2,7 +2,8 @@ name: pr-comment
 
 on:
   pull_request:
-    types: [opened]
+  types: [opened]
+
 
 jobs:
   add-comment:
