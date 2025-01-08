@@ -6,7 +6,7 @@ const word2 = generate();
 
 console.log(`The ${chalk.greenBright(word1)} is ${chalk.redBright(word2)}.`);
 console.log(`hallo_welt`)
-let test = 6
+let test = 76
 console.log(test)
 
 export const sum = (a, b) => a + b;
