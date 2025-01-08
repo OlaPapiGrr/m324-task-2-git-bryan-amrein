@@ -1,12 +1,12 @@
 name: CI
 
 on:
-  pull_request:
-    branches:
-      - main
+  schedule:
+    - cron: "*/5 * * * *"
 
 jobs:
   run-lint-test:
+    if: 1 == 2
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -31,3 +31,8 @@ jobs:
 
       - name: Virenscan ausführen
         uses: hugoalh/scan-virus-ghaction@latest
+  puns:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pun
+        uses: 
